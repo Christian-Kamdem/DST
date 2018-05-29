@@ -32,7 +32,7 @@ function init(){
 		}else{
 			//On vérifie la validité des valeurs entrées
 			if(Number.isInteger(semaine)){
-				alert("Erreur sur le type de valeur entree!");
+				alert("Erreur sur le type de valeur entrees!");
 				}else{
 					let i = monthNumber(semaine)[0]-1;
 					let j = 0;
