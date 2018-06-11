@@ -1,10 +1,11 @@
 #container{
-	width: 360px;
-	height: 600px;
+	width: 700px;
+	height: 400px;
 	margin: auto;
 	box-shadow: 5px 5px 2px 2px #e5e5e5;
 	border:1px solid #e5e5e5;
 	border-radius: 4px;
+	background-color: #e5e5e5;
 }
 #container header{
 	margin:auto;
@@ -14,26 +15,28 @@
 	color:white;
 	font-family: calibri;
 	text-align: center;
-	font-size: 2em;
+	font-size: 1.8em;
 }
 #input_part{
 	margin: auto;
-	width: 95%;
-	height: 50%;
+	width: 50%;
+	height: 92%;
+	float:left;
 }
 #input_part input{
-	width:100%;
-	height:15%;
-	border-radius: 4px;
+	width:50%;
+	height:12%;
+	border-radius: 1px;
 	outline: none;
 	margin-bottom: 1%;	
-	border: 0px solid #e5e5e5;
-	border-bottom: 1px solid #e5e5e5;
+	border: 1px solid #e5e5e5;
 }
 #output_part{
 	position: relative;
-	width: 100%;
-	height: 42%;
+	top:-92%;
+	width: 50%;
+	height: 92%;
+	float:right;
 }
 #submit{
 	margin-top: 5%;

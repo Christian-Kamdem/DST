@@ -18,16 +18,19 @@ function init(){
 		["Novembre",[120,171,41,267,274,145,40,441]],
 		["Decembre",[46,64,22,104,117,67,36,221]]
 	];
+	var regime = ["Min","10%","20%","50%","Moy","80%","90%","Max"];
 	
 	const send = document.getElementById("submit");
 	//
 	send.addEventListener("click",()=>{
 		const semaine = document.getElementById("semaine").value;
-		const vap = document.getElementById("vap").value;
-		const vir = document.getElementById("vir").value;
-		const result = document.getElementById("result");
+		const vapUn = document.getElementById("vap1").value;
+		const vapDeux = document.getElementById("vap2").value;
+		const vapTrois = document.getElementById("vap3").value;
+		const vi = document.getElementById("vi").value;
+		const result = document.getElementById("output_part");
 		//On vériffie que tout les champs sont non vides
-		if(semaine === "" || vap === "" || vir === ""){
+		if(semaine === "" || vapUn === "" || vapDeux === "" || vapTrois === "" || vi === ""){
 			alert("Veuillez remplir tout les champs!");	
 		}else{
 			//On vérifie la validité des valeurs entrées
@@ -37,19 +40,30 @@ function init(){
 					let i = monthNumber(semaine)[0]-1;
 					let j = 0;
 					let cptSemaine = 5;
-					let vap2 = vap;
-					while(i<tableau.length && cptSemaine<=20){
-						tableau[i][1].sort(function(a, b){return b-a});
-						while(j<tableau[i][1].length){							
-							if(vap2>tableau[i][1][j]){
-								vap2 = tableau[i][1][j];
-								break;
+					let vap2 = (parseInt(vapUn) + parseInt(vapDeux) + parseInt(vapTrois))/3;console.log(vap2);
+					let vapPosition = 0;
+					let totalVap = 0;
+					while(i<tableau.length && cptSemaine<=25 && tableau[i][j] !== "Decembre"){
+						if(cptSemaine === 5){
+							let tableCopy = tableau[i][1].slice(0);
+							tableCopy.sort(function(a, b){return b-a});
+							while(j<tableCopy.length){							
+								if(vap2>=tableCopy[j]){
+									vap2 = tableCopy[j];
+									totalVap += vap2;
+									vapPosition = tableau[i][1].indexOf(vap2);
+									console.log(tableau[i][1].indexOf(vap2));
+									break;
 							}
 							j++;
-						}console.log(tableau[i][0]+' Volume : '+vap2);						
-						vap2 = vap;
-						j = 0;
-						//console.log(tableau[i]+' Vap : '+vap);						
+						}
+						}else{
+							vap2 = tableau[i][1][vapPosition];
+							totalVap += vap2;
+						}												
+							console.log(tableau[i][0]+' Volume : '+vap2);						
+						vap2 = (vapUn + vapDeux + vapTrois)/3;
+						j = 0;					
 						i++;
 						cptSemaine += 5; 
 					}
@@ -57,42 +71,21 @@ function init(){
 		}		
 	},false);
 function monthNumber(semaine){
-	if(semaine>=1 && semaine<5){
-		//Décembre
-		return [1,"Decembre"];
-	}else if(semaine>=5 && semaine<9){
-		//Janvier
-		return [2,"Janvier"];
-	}else if(semaine>=9 && semaine<13){
-		//Février
-		return [3,"Fevrier"];
-	}else if(semaine>=13 && semaine<17){
-		//Mars
-		return [4,"Mars"];
-	}else if(semaine>=17 && semaine<21){
-		//Avril
-		return [5,"Avril"];
-	}else if(semaine>=21 && semaine<25){
-		//Mai
-		return [6,"Mai"];
-	}else if(semaine>=25 && semaine<30){
-		//Juin
-		return [7,"Juin"];
-	}else if(semaine>=30 && semaine<34){
+if(semaine>=1 && semaine<6){
 		//Juillet
-		return [8,"Juillet"];
-	}else if(semaine>=34 && semaine<38){
+		return [7,"Juillet"];
+	}else if(semaine>=6 && semaine<11){
 		//Aout
-		return [9,"Aout"];
-	}else if(semaine>=38 && semaine<42){
+		return [8,"Aout"];
+	}else if(semaine>=11 && semaine<16){
 		//Septembre
-		return [10,"Septembre"];
-	}else if(semaine>=42 && semaine<46){
+		return [9,"Septembre"];
+	}else if(semaine>=16 && semaine<21){
 		//Octobre
-		return [11,"Octobre"];
-	}else if(semaine>=46 && semaine<50){
+		return [10,"Octobre"];
+	}else if(semaine>=21 && semaine<26){
 		//Novembre
-		return [12,"Novembre"];
+		return [11,"Novembre"];
 	}
 }
 }
