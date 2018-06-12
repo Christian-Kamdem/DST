@@ -43,6 +43,7 @@ function init(){
 					let vap2 = (parseInt(vapUn) + parseInt(vapDeux) + parseInt(vapTrois))/3;console.log(vap2);
 					let vapPosition = 0;
 					let totalVap = 0;
+					let totalVapv = 0;
 					while(i<tableau.length && cptSemaine<=25 && tableau[i][j] !== "Decembre"){
 						if(cptSemaine === 5){
 							let tableCopy = tableau[i][1].slice(0);
@@ -65,12 +66,29 @@ function init(){
 							totalVap += vap2;
 						}												
 							console.log(tableau[i][0]+' Volume : '+vap2);						
-						vap2 = (vapUn + vapDeux + vapTrois)/3;
+						vap2 = (parseInt(vapUn) + parseInt(vapDeux) + parseInt(vapTrois))/3;
 						j = 0;					
 						i++;
-						cptSemaine += 5; 
-						let vo = vi + totalVap - (604800*(20-semaine+1));
-						let vdr = vo - 1000000000;
+						cptSemaine += 5;
+						//Vapr = parseInt(totalVap)*604800*4 
+						//Vex = 199000000
+						//Vru = 5 808 420 000 - Vapv
+						//Vapv = Somme des vap des autres mois
+						//Vcu = (604800*(20-parseInt(semaine)+1)
+						/*
+							Si Vrd>=Vru alors
+								affiche Optimisation réalisée
+							sinon
+								Vcd = Vru + Vex - Vapr - Vi
+								tarifCentrale = (Vcd-Vcu)*valeurArgent1 //Valeur absolue
+								tarifRegularisation = (Vru-Vrd)*valeurArgent2 //Valeur absolue
+								  Si(tarifCentrale>tarifRegularisation)
+								  	affiche Privilégier la régularisation
+								  Sinon
+								  	affiche Privilégier la centrale
+						*/
+						let vo = parseInt(vi) + (parseInt(totalVap)*604800*4) - (604800*(20-parseInt(semaine)+1));
+						let vrd = vo - 199000000;//Add Vapv
 						requestAnimationFrame(()=>{
 							document.getElementById("vo").innerHTML = vo;
 						});
@@ -79,19 +97,19 @@ function init(){
 		}		
 	},false);
 function monthNumber(semaine){
-if(semaine>=1 && semaine<6){
+if(semaine>=1 && semaine<5){
 		//Juillet
 		return [7,"Juillet"];
-	}else if(semaine>=6 && semaine<11){
+	}else if(semaine>=5 && semaine<10){
 		//Aout
 		return [8,"Aout"];
-	}else if(semaine>=11 && semaine<16){
+	}else if(semaine>=10 && semaine<15){
 		//Septembre
 		return [9,"Septembre"];
-	}else if(semaine>=16 && semaine<21){
+	}else if(semaine>=15 && semaine<20){
 		//Octobre
 		return [10,"Octobre"];
-	}else if(semaine>=21 && semaine<26){
+	}else if(semaine>=20 && semaine<25){
 		//Novembre
 		return [11,"Novembre"];
 	}
