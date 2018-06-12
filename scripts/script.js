@@ -41,9 +41,10 @@ function init(){
 					let j = 0;
 					let cptSemaine = 5;
 					let vap2 = (parseInt(vapUn) + parseInt(vapDeux) + parseInt(vapTrois))/3;console.log(vap2);
-					let vapPosition = 0;
+					var vapPosition = 0;
 					let totalVap = 0;
 					let totalVapv = 0;
+					var vex = 199000000;
 					while(i<tableau.length && cptSemaine<=25 && tableau[i][j] !== "Decembre"){
 						if(cptSemaine === 5){
 							let tableCopy = tableau[i][1].slice(0);
@@ -87,12 +88,29 @@ function init(){
 								  Sinon
 								  	affiche Privilégier la centrale
 						*/
-						let vo = parseInt(vi) + (parseInt(totalVap)*604800*4) - (604800*(20-parseInt(semaine)+1));
-						let vrd = vo - 199000000;//Add Vapv
+						var vo = parseInt(vi) + (parseInt(totalVap)*604800*4) - (604800*(20-parseInt(semaine)+1));
+						var vrd = vo - vex;//Add Vapv
 						requestAnimationFrame(()=>{
 							document.getElementById("vo").innerHTML = vo;
 						});
 					}
+					//On calcul Vapv 
+					let vapv = 0;
+					i = 0;
+					j = 0;
+					while(i<=tableau.length && tableau[i][j] !== "Juillet" && tableau[i][j] !== "Aout" 
+						&& tableau[i][j] !== "Septembre" && tableau[i][j] !== "Octobre" && tableau[i][j] !== "Novembre"){
+						vapv += tableau[i][1][vapPosition];
+						i++;
+					}
+					vrd += vapv;
+					requestAnimationFrame(()=>{
+							document.getElementById("vapv").innerHTML = vapv;
+						});
+					requestAnimationFrame(()=>{
+							document.getElementById("vapr").innerHTML = parseInt(totalVap)*604800*4;
+						});
+					//
 				}
 		}		
 	},false);
