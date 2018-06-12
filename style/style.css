@@ -5,7 +5,6 @@
 	box-shadow: 5px 5px 2px 2px #e5e5e5;
 	border:1px solid #e5e5e5;
 	border-radius: 4px;
-	background-color: #e5e5e5;
 }
 #container header{
 	margin:auto;
@@ -22,21 +21,39 @@
 	width: 50%;
 	height: 92%;
 	float:left;
+	background-color: #e5e5e5;
 }
 #input_part input{
-	width:50%;
+	font-family: calibri;
+	width:32%;
 	height:12%;
 	border-radius: 1px;
+	margin-left:5%;
 	outline: none;
 	margin-bottom: 1%;	
 	border: 1px solid #e5e5e5;
 }
+#input_part label{
+	margin-left: 5%;
+}
 #output_part{
 	position: relative;
-	top:-92%;
+	top:0%;
 	width: 50%;
 	height: 92%;
 	float:right;
+}
+table{
+	width:95%;
+	margin:auto;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: left;
 }
 #submit{
 	margin-top: 5%;
@@ -46,7 +63,7 @@
 	height: 11%;
 	width: 25%;
 	border-radius: 4px;
-	background-color: #ed624b;
+	background-color: #4ded5f;
 	color: white;
 	font-size: 1.5em;
 	font-family: calibri;

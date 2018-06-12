@@ -53,6 +53,9 @@ function init(){
 									totalVap += vap2;
 									vapPosition = tableau[i][1].indexOf(vap2);
 									console.log(tableau[i][1].indexOf(vap2));
+									requestAnimationFrame(()=>{
+										document.getElementById("regime").innerHTML = regime[vapPosition];
+									});
 									break;
 							}
 							j++;
@@ -66,6 +69,11 @@ function init(){
 						j = 0;					
 						i++;
 						cptSemaine += 5; 
+						let vo = vi + totalVap - (604800*(20-semaine+1));
+						let vdr = vo - 1000000000;
+						requestAnimationFrame(()=>{
+							document.getElementById("vo").innerHTML = vo;
+						});
 					}
 				}
 		}		
