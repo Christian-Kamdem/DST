@@ -1,6 +1,6 @@
 #container{
-	width: 700px;
-	height: 400px;
+	width: 900px;
+	height: 510px;
 	margin: auto;
 	box-shadow: 5px 5px 2px 2px #e5e5e5;
 	border:1px solid #e5e5e5;
@@ -18,15 +18,16 @@
 }
 #input_part{
 	margin: auto;
-	width: 50%;
+	width: 40%;
 	height: 92%;
 	float:left;
 	background-color: #e5e5e5;
 }
 #input_part input{
-	font-family: calibri;
+	border-radius: 16px;
+	font-size: 1.5em;
 	width:32%;
-	height:12%;
+	height:10%;
 	border-radius: 1px;
 	margin-left:5%;
 	outline: none;
@@ -39,7 +40,7 @@
 #output_part{
 	position: relative;
 	top:0%;
-	width: 50%;
+	width: 60%;
 	height: 92%;
 	float:right;
 }
@@ -63,7 +64,7 @@ th, td {
 	height: 11%;
 	width: 25%;
 	border-radius: 4px;
-	background-color: #4ded5f;
+	background-color: #127ab7;
 	color: white;
 	font-size: 1.5em;
 	font-family: calibri;

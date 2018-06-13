@@ -71,7 +71,7 @@ function init(){
 						j = 0;					
 						i++;
 						cptSemaine += 5;
-						//Vapr = parseInt(totalVap)*604800*4 
+						var vapr = parseInt(totalVap)*604800*4 
 						//Vex = 199000000
 						//Vru = 5 808 420 000 - Vapv
 						//Vapv = Somme des vap des autres mois
@@ -89,7 +89,7 @@ function init(){
 								  	affiche Privilégier la centrale
 						*/
 						var vo = parseInt(vi) + (parseInt(totalVap)*604800*4) - (604800*(20-parseInt(semaine)+1));
-						var vrd = vo - vex;//Add Vapv
+						var vrd = parseInt(vo) - parseInt(vex);//Add Vapv
 						requestAnimationFrame(()=>{
 							document.getElementById("vo").innerHTML = vo;
 						});
@@ -103,15 +103,14 @@ function init(){
 						vapv += tableau[i][1][vapPosition];
 						i++;
 					}
-					vrd += vapv;
-					let vru = 5808420000 - parseInt(vapv);
-					//
+					vrd -= parseInt(vapv);
+					let vru = 6007420000 - parseInt(vapv);
+					var vcd = parseInt(vru) + parseInt(vex) - parseInt(vapr) - parseInt(vi);
 						if(vrd>=vru){
-							document.getElementById("or").innerHTML = "Oui";
-						}else{
-							let vcd = parseInt(vru) + parseInt(vex) - parseInt(vapr) - parseInt(vi);
-							let tarifCentrale = (parseInt(vcd)-parseInt(vcu))*33.33;
-							let tarifRegularisation = (parseInt(vru)-parseInt(vrd))*5.787;
+							document.getElementById("or").innerHTML = "Pas d'action";
+						}else{							
+							var tarifCentrale = (parseInt(vcd)-parseInt(vcu))*33.33;
+							var tarifRegularisation = (parseInt(vru)-parseInt(vrd))*5.787;
 							if(tarifCentrale>=tarifRegularisation){
 								document.getElementById("or").innerHTML = "Privilégier la régularisation";
 							}else{
@@ -120,10 +119,22 @@ function init(){
 						}
 					//
 					requestAnimationFrame(()=>{
-							document.getElementById("vapv").innerHTML = vapv;
+							document.getElementById("vcd").innerHTML = vcd;
 						});
 					requestAnimationFrame(()=>{
-							document.getElementById("vapr").innerHTML = parseInt(totalVap)*604800*4;
+							document.getElementById("vrd").innerHTML = vrd;
+						});
+					requestAnimationFrame(()=>{
+							document.getElementById("vru").innerHTML = vru;
+						});
+					requestAnimationFrame(()=>{
+							document.getElementById("vcu").innerHTML = vcu;
+						});
+					requestAnimationFrame(()=>{
+							document.getElementById("tc").innerHTML = tarifCentrale;
+						});
+					requestAnimationFrame(()=>{
+							document.getElementById("tr").innerHTML = tarifRegularisation;
 						});
 					//
 				}

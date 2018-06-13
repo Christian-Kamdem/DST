@@ -7,7 +7,7 @@
 	</head>
 	<body>
 		<div id="container">
-			<header>Inputs</header>
+			<header>OUTIL GESTION BARRAGE-CENTRALE</header>
 			<section id="input_part"><br/><br/>
 				<label>Numero de semaine :</label><input type="number" id="semaine" placeholder=""/>
 				<label>Apport-semaine (m3)[Vap1] :</label><input id="vap1" placeholder=""/>
@@ -20,7 +20,7 @@
 				<table>
 				  <caption>Tableau des résultats</caption>
 				  <tr>
-				    <th>Titres</th>
+				    <th>Grandeurs</th>
 				    <th>Valeurs</th>
 				  </tr>
 				  <tr>
@@ -28,23 +28,39 @@
 				    <td id="regime"></td>
 				  </tr>
 				  <tr>
-				    <td>Vo (m3)</td>
+				    <td title="Volume prévisionel de remplissage sur la période entrée">Vo (m3)</td>
 				    <td id="vo"></td>
 				  </tr>
 				  <tr>
-				    <td>Vapv (m3)</td>
-				    <td id="vapv"></td>
+				    <td title="Volume disponible pour l'alimentation de la centrale si régularisation parfaitement éffectuée">Vcd (m3)</td>
+				    <td id="vcd"></td>
 				  </tr>
 				  <tr>
-				    <td>Vapr (m3)</td>
-				    <td id="vapr"></td>
+				    <td title="Volume disponible pour la régularisation si centrale alimentée à la norme">Vrd (m3)</td>
+				    <td id="vrd"></td>
+				  </tr>
+				   <tr>
+				    <td title="Volume utile à la régularisation de la Sanaga par lom Pangar">Vru (m3)</td>
+				    <td id="vru"></td>
+				  </tr>
+				   <tr>
+				    <td title="Volume utile à l'alimentation de la centrale pour 30MW">Vcu (m3)</td>
+				    <td id="vcu"></td>
 				  </tr>
 				  <tr>
-				    <td>Optimisation réussi?</td>
+				    <td>Tarif centrale (FCFA)</td>
+				    <td id="tc"></td>
+				  </tr>
+				  <tr>
+				    <td>Tarif régularisation (FCFA)</td>
+				    <td id="tr"></td>
+				  </tr>
+				  <tr>
+				    <td>Décision</td>
 				    <td id="or"></td>
 				  </tr>
 				</table>
-				<canvas id="myChart" width="400" height="280"></canvas>
+				<canvas id="myChart" width="400" height="140"></canvas>
 			</section>
 		</div>
 		<script src="scripts/script.js"></script>
@@ -54,9 +70,9 @@ var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+        labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],
         datasets: [{
-            label: '# of Votes',
+            label: '',
             data: [12, 19, 3, 5, 2, 3],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
