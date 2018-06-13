@@ -75,7 +75,7 @@ function init(){
 						//Vex = 199000000
 						//Vru = 5 808 420 000 - Vapv
 						//Vapv = Somme des vap des autres mois
-						//Vcu = (604800*(20-parseInt(semaine)+1)
+						var vcu = 604800*(20-parseInt(semaine)+1);
 						/*
 							Si Vrd>=Vru alors
 								affiche Optimisation réalisée
@@ -104,6 +104,21 @@ function init(){
 						i++;
 					}
 					vrd += vapv;
+					let vru = 5808420000 - parseInt(vapv);
+					//
+						if(vrd>=vru){
+							document.getElementById("or").innerHTML = "Oui";
+						}else{
+							let vcd = parseInt(vru) + parseInt(vex) - parseInt(vapr) - parseInt(vi);
+							let tarifCentrale = (parseInt(vcd)-parseInt(vcu))*33.33;
+							let tarifRegularisation = (parseInt(vru)-parseInt(vrd))*5.787;
+							if(tarifCentrale>=tarifRegularisation){
+								document.getElementById("or").innerHTML = "Privilégier la régularisation";
+							}else{
+								document.getElementById("or").innerHTML = "Privilégier la centrale";
+							}
+						}
+					//
 					requestAnimationFrame(()=>{
 							document.getElementById("vapv").innerHTML = vapv;
 						});
