@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded",()=>{init();}
 ,false);
 
 function init(){
-	//
+	
 	var tableau = [
 		["Janvier",[19,36,9,56,68,53,28,143]],
 		["Fevrier",[9,16,4,29,39,35,31,112]],
@@ -20,9 +20,11 @@ function init(){
 	];
 	var regime = ["Min","10%","20%","50%","Moy","80%","90%","Max"];
 	
-	const send = document.getElementById("submit");
+	const send = document.getElementById("evaluer");
 	//
 	send.addEventListener("click",()=>{
+		const resultTable = document.getElementById("resultTable");
+		const myChart = document.getElementById("myChart");
 		const semaine = document.getElementById("semaine").value;
 		const vapUn = document.getElementById("vap1").value;
 		const vapDeux = document.getElementById("vap2").value;
@@ -42,7 +44,6 @@ function init(){
 					let cptSemaine = 5;
 					let vap2 = (parseInt(vapUn) + parseInt(vapDeux) + parseInt(vapTrois))/3;console.log(vap2);
 					var vapPosition = 0;
-					let totalVap = 0;
 					let totalVapv = 0;
 					var vex = 199000000;
 					while(i<tableau.length && cptSemaine<=25 && tableau[i][j] !== "Decembre"){
@@ -52,7 +53,6 @@ function init(){
 							while(j<tableCopy.length){							
 								if(vap2>=tableCopy[j]){
 									vap2 = tableCopy[j];
-									totalVap += vap2;
 									vapPosition = tableau[i][1].indexOf(vap2);
 									console.log(tableau[i][1].indexOf(vap2));
 									requestAnimationFrame(()=>{
@@ -64,18 +64,17 @@ function init(){
 						}
 						}else{
 							vap2 = tableau[i][1][vapPosition];
-							totalVap += vap2;
 						}												
 							console.log(tableau[i][0]+' Volume : '+vap2);						
 						vap2 = (parseInt(vapUn) + parseInt(vapDeux) + parseInt(vapTrois))/3;
 						j = 0;					
 						i++;
-						cptSemaine += 5;
-						var vapr = parseInt(totalVap)*604800*4 
+						cptSemaine += 5;						
+					}
 						//Vex = 199000000
 						//Vru = 5 808 420 000 - Vapv
 						//Vapv = Somme des vap des autres mois
-						var vcu = 604800*(20-parseInt(semaine)+1);
+						var vcu = 604800*(20-parseInt(semaine)+1)*60;
 						/*
 							Si Vrd>=Vru alors
 								affiche Optimisation réalisée
@@ -87,15 +86,22 @@ function init(){
 								  	affiche Privilégier la régularisation
 								  Sinon
 								  	affiche Privilégier la centrale
-						*/
-						var vo = parseInt(vi) + (parseInt(totalVap)*604800*4) - (604800*(20-parseInt(semaine)+1));
-						var vrd = parseInt(vo) - parseInt(vex);//Add Vapv
+						*/						
+					//On calcul Vapr
+					var totalVapr = 0;
+					i = 6;
+					while(i<=tableau.length && i<11){
+						totalVapr += tableau[i][1][vapPosition];
+						i++;
+					}
+					var vapr = parseInt(totalVapr)*604800*4; 
+					var vo = parseInt(vi) + parseInt(vapr) - (604800*(20-parseInt(semaine)+1));
+					var vrd = parseInt(vo) - parseInt(vex);//Add Vapv
 						requestAnimationFrame(()=>{
 							document.getElementById("vo").innerHTML = vo;
 						});
-					}
 					//On calcul Vapv 
-					let vapv = 0;
+					var vapv = 0;
 					i = 0;
 					j = 0;
 					while(i<=tableau.length && tableau[i][j] !== "Juillet" && tableau[i][j] !== "Aout" 
@@ -103,40 +109,53 @@ function init(){
 						vapv += tableau[i][1][vapPosition];
 						i++;
 					}
+					vapv *= 604800*4;
 					vrd -= parseInt(vapv);
-					let vru = 6007420000 - parseInt(vapv);
+					var vru = 6007420000 - parseInt(vapv);
 					var vcd = parseInt(vru) + parseInt(vex) - parseInt(vapr) - parseInt(vi);
 						if(vrd>=vru){
 							document.getElementById("or").innerHTML = "Pas d'action";
-						}else{							
-							var tarifCentrale = (parseInt(vcd)-parseInt(vcu))*33.33;
-							var tarifRegularisation = (parseInt(vru)-parseInt(vrd))*5.787;
-							if(tarifCentrale>=tarifRegularisation){
-								document.getElementById("or").innerHTML = "Privilégier la régularisation";
+						}else{
+							if(vcd>=vcu){
+								document.getElementById("or").innerHTML = "Completer les "+(parseInt(vru)-parseInt(vrd))+" m3 pour la regularisation";
+							requestAnimationFrame(()=>{
+							document.getElementById("tc").innerHTML = "";
+							});
+							requestAnimationFrame(()=>{
+							document.getElementById("tr").innerHTML = "";
+							});
 							}else{
-								document.getElementById("or").innerHTML = "Privilégier la centrale";
-							}
-						}
+								var tarifCentrale = (parseInt(vcd)-parseInt(vcu))*33.33;
+								var tarifRegularisation = (parseInt(vru)-parseInt(vrd))*5.787;
+								if(tarifCentrale>=tarifRegularisation){
+								document.getElementById("or").innerHTML = "Completer "+(parseInt(vcu)-parseInt(vcd))+" m3 par la centrale thermique";
+								}else{
+								document.getElementById("or").innerHTML = "Fonctionnement de la centrale au debit moyen de 60 m3/s";
+								}
+								requestAnimationFrame(()=>{
+									document.getElementById("tc").innerHTML = tarifCentrale;
+								});
+								requestAnimationFrame(()=>{
+									document.getElementById("tr").innerHTML = tarifRegularisation;
+								});
+							}							
+													}
 					//
 					requestAnimationFrame(()=>{
-							document.getElementById("vcd").innerHTML = vcd;
+							document.getElementById("vcd").innerHTML = Math.abs(vcd);
 						});
 					requestAnimationFrame(()=>{
-							document.getElementById("vrd").innerHTML = vrd;
+							document.getElementById("vrd").innerHTML = Math.abs(vrd);
 						});
 					requestAnimationFrame(()=>{
-							document.getElementById("vru").innerHTML = vru;
+							document.getElementById("vru").innerHTML = Math.abs(vru);
 						});
 					requestAnimationFrame(()=>{
-							document.getElementById("vcu").innerHTML = vcu;
+							document.getElementById("vcu").innerHTML = Math.abs(vcu);
 						});
-					requestAnimationFrame(()=>{
-							document.getElementById("tc").innerHTML = tarifCentrale;
-						});
-					requestAnimationFrame(()=>{
-							document.getElementById("tr").innerHTML = tarifRegularisation;
-						});
+				
 					//
+					graphs(Math.abs(vru),Math.abs(vrd),Math.abs(vcu),Math.abs(vcd));
 				}
 		}		
 	},false);
@@ -158,4 +177,81 @@ if(semaine>=1 && semaine<5){
 		return [11,"Novembre"];
 	}
 }
+function graphs(vru,vrd,vcu,vcd){
+	//Chart
+	var ctx = document.getElementById("myChart").getContext('2d');
+	var ctx2 = document.getElementById("myChart2").getContext('2d');
+	var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["Vru","Vrd"],
+        datasets: [{
+            label: '',
+            data: [vru,vrd],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+	var myChart2 = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: ["Vcu","Vcd"],
+        datasets: [{
+            label: '',
+            data: [vcu,vcd],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+}graphs();
 }
