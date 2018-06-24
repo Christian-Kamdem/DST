@@ -1,7 +1,7 @@
 #container{
 	position: relative;
 	width: 1000px;
-	height: 620px;
+	height: 640px;
 	margin: auto;
 	box-shadow: 5px 5px 2px 2px #e5e5e5;
 	border:1px solid #e5e5e5;
@@ -20,7 +20,7 @@
 #input_part{
 	margin: auto;
 	width: 40%;
-	height: 35%;
+	height: 33%;
 	float:left;
 	background-color: #e5e5e5;
 }

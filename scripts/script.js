@@ -31,6 +31,8 @@ function init(){
 		const vapTrois = document.getElementById("vap3").value;
 		const vi = document.getElementById("vi").value;
 		const result = document.getElementById("output_part");
+		const pd = document.getElementById("p");
+		var puissance = "";
 		//On vériffie que tout les champs sont non vides
 		if(semaine === "" || vapUn === "" || vapDeux === "" || vapTrois === "" || vi === ""){
 			alert("Veuillez remplir tout les champs!");	
@@ -44,6 +46,7 @@ function init(){
 					let cptSemaine = 5;
 					let vap2 = (parseInt(vapUn) + parseInt(vapDeux) + parseInt(vapTrois))/3;console.log(vap2);
 					var vapPosition = 0;
+					var Vev = 0;
 					let totalVapv = 0;
 					var vex = 199000000;
 					while(i<tableau.length && cptSemaine<=25 && tableau[i][j] !== "Decembre"){
@@ -95,7 +98,7 @@ function init(){
 						i++;
 					}
 					var vapr = parseInt(totalVapr)*604800*4; 
-					var vo = parseInt(vi) + parseInt(vapr) - (604800*(20-parseInt(semaine)+1));
+					var vo = parseInt(vi) + parseInt(vapr) - (604800*(20-parseInt(semaine)+1)) - parseInt(Vev);
 					var vrd = parseInt(vo) - parseInt(vex);//Add Vapv
 						requestAnimationFrame(()=>{
 							document.getElementById("vo").innerHTML = vo;
@@ -112,19 +115,21 @@ function init(){
 					vapv *= 604800*4;
 					vrd -= parseInt(vapv);
 					var vru = 6007420000 - parseInt(vapv);
-					var vcd = parseInt(vru) + parseInt(vex) - parseInt(vapr) - parseInt(vi);
+					var vcd = parseInt(vru) + parseInt(vex) - parseInt(vapr) - parseInt(vi) - parseInt(Vev);
+					
 						if(vrd>=vru){
 							document.getElementById("or").innerHTML = "Pas d'action";
 						}else{
 							if(vcd>=vcu){
 								document.getElementById("or").innerHTML = "Completer les "+(parseInt(vru)-parseInt(vrd))+" m3 pour la regularisation";
-							requestAnimationFrame(()=>{
+							/*requestAnimationFrame(()=>{
 							document.getElementById("tc").innerHTML = "";
 							});
 							requestAnimationFrame(()=>{
 							document.getElementById("tr").innerHTML = "";
-							});
+							});*/
 							}else{
+								puissance = Math.abs((0.92*997*9.9*0.000001*(parseInt(vcu)-parseInt(vcd)))/3800);
 								var tarifCentrale = (parseInt(vcd)-parseInt(vcu))*33.33;
 								var tarifRegularisation = (parseInt(vru)-parseInt(vrd))*5.787;
 								if(tarifCentrale>=tarifRegularisation){
@@ -134,10 +139,11 @@ function init(){
 								}
 								requestAnimationFrame(()=>{
 									document.getElementById("tc").innerHTML = tarifCentrale;
-								});
-								requestAnimationFrame(()=>{
+		
+								});								
+								/*requestAnimationFrame(()=>{
 									document.getElementById("tr").innerHTML = tarifRegularisation;
-								});
+								});*/
 							}							
 													}
 					//
@@ -153,6 +159,10 @@ function init(){
 					requestAnimationFrame(()=>{
 							document.getElementById("vcu").innerHTML = Math.abs(vcu);
 						});
+					requestAnimationFrame(()=>{
+								
+									pd.innerHTML = puissance;
+								});
 				
 					//
 					graphs(Math.abs(vru),Math.abs(vrd),Math.abs(vcu),Math.abs(vcd));
